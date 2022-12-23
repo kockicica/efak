@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cli", "cli\cli.csproj", "{3C1F5638-BE51-4B7B-8597-3D666ECA6748}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{A6AA65AE-9D82-4C7D-98F5-B19EE34E0C52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efak.abstractions", "efak.abstractions\efak.abstractions.csproj", "{9972CCDA-2CD5-4152-93B7-10CBC56E7DC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efak.cli", "efak.cli\efak.cli.csproj", "{373FF83E-E54B-44D9-A74A-2E143BE277F9}"
 EndProject
@@ -17,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{BE5DE6
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efak.test", "efak.test\efak.test.csproj", "{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +27,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A6AA65AE-9D82-4C7D-98F5-B19EE34E0C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6AA65AE-9D82-4C7D-98F5-B19EE34E0C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C1F5638-BE51-4B7B-8597-3D666ECA6748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C1F5638-BE51-4B7B-8597-3D666ECA6748}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C1F5638-BE51-4B7B-8597-3D666ECA6748}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C1F5638-BE51-4B7B-8597-3D666ECA6748}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9972CCDA-2CD5-4152-93B7-10CBC56E7DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9972CCDA-2CD5-4152-93B7-10CBC56E7DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9972CCDA-2CD5-4152-93B7-10CBC56E7DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9972CCDA-2CD5-4152-93B7-10CBC56E7DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{373FF83E-E54B-44D9-A74A-2E143BE277F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{373FF83E-E54B-44D9-A74A-2E143BE277F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{373FF83E-E54B-44D9-A74A-2E143BE277F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,5 +35,9 @@ Global
 		{A1AD5394-4A4C-486F-881F-0215C010D745}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1AD5394-4A4C-486F-881F-0215C010D745}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1AD5394-4A4C-486F-881F-0215C010D745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
