@@ -30,8 +30,7 @@ using FileMode = System.IO.FileMode;
 
 [GitHubActions("continuous",
                GitHubActionsImage.UbuntuLatest,
-               OnPushBranchesIgnore = new []{"develop"},
-               OnPushTagsIgnore = new []{"v*"},
+               On = new [] { GitHubActionsTrigger.Push },
                PublishArtifacts = false,
                InvokedTargets = new[] { nameof(Compile) },
                FetchDepth = 0

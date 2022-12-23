@@ -16,12 +16,7 @@
 
 name: continuous
 
-on:
-  push:
-    branches-ignore:
-      - develop
-    tags-ignore:
-      - 'v*'
+on: [push]
 
 jobs:
   ubuntu-latest:
