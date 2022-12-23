@@ -3,6 +3,7 @@ using System.Linq;
 
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -17,6 +18,7 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
+[GitHubActions("continuous", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Cli) })]
 class Build : NukeBuild {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -48,7 +50,7 @@ class Build : NukeBuild {
     string InformationalVersion => GitVersion?.InformationalVersion ?? DefaultNoGitVersion;
     string AssemblySemVer       => GitVersion?.AssemblySemVer ?? DefaultNoGitVersion;
     string AssemblySemFileVer   => GitVersion?.AssemblySemFileVer ?? DefaultNoGitVersion;
-    
+
     Target Clean => _ => _
                          .Before(Restore)
                          .Executes(() =>
