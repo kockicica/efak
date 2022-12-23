@@ -18,7 +18,8 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[GitHubActions("continuous", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Cli) })]
+[GitHubActions("continuous", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Cli) },
+               FetchDepth = 0)]
 class Build : NukeBuild {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
