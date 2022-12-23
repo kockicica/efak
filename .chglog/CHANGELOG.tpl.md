@@ -1,5 +1,5 @@
 {{ if .Versions -}}
-<a name="vNext"></a>
+<a name="unreleased"></a>
 ## [Unreleased]
 
 {{ if .Unreleased.CommitGroups -}}
@@ -29,6 +29,13 @@
 {{ end }}
 {{ end -}}
 
+{{- if .MergeCommits -}}
+### Pull Requests
+{{ range .MergeCommits -}}
+- {{ .Header }}
+{{ end }}
+{{ end -}}
+
 {{- if .NoteGroups -}}
 {{ range .NoteGroups -}}
 ### {{ .Title }}
@@ -40,7 +47,7 @@
 {{ end -}}
 
 {{- if .Versions }}
-[Unreleased]: {{ .Info.RepositoryURL }}/compare/{{ $latest := index .Versions 0 }}{{ $latest.Tag.Name }}...HEAD
+[unreleased]: {{ .Info.RepositoryURL }}/compare/{{ $latest := index .Versions 0 }}{{ $latest.Tag.Name }}...HEAD
 {{ range .Versions -}}
 {{ if .Tag.Previous -}}
 [{{ .Tag.Name }}]: {{ $.Info.RepositoryURL }}/compare/{{ .Tag.Previous.Name }}...{{ .Tag.Name }}

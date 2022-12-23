@@ -19,9 +19,11 @@
   <ItemGroup>
     <PackageDownload Include="GitVersion.Tool" Version="[5.11.1]" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="..\.github\workflows\tagged.yml" />
+    
+  <ItemGroup Condition="'$(NukeRootDirectory)' != '' And '$(NukeExcludeConfig)' != 'True'">
+    <None Include="$(NukeRootDirectory)\.chglog\config.yml" LinkBase="chglog" />
+    <None Include="$(NukeRootDirectory)\.chglog\CHANGELOG.tpl.md" LinkBase="chglog" />
   </ItemGroup>
-
+    
+    
 </Project>

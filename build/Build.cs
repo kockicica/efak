@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -150,7 +151,10 @@ class Build : NukeBuild {
                                          Credentials = new Credentials(GitHubActions.Instance.Token)
                                      };
 
-                                     var changeLogSectionEntries = ChangelogTasks.ExtractChangelogSectionNotes(ChangeLogFile);
+                                     var changeLogSectionEntries =
+                                         ControlFlow.SuppressErrors(
+                                             () => ChangelogTasks.ExtractChangelogSectionNotes(ChangeLogFile), Array.Empty<string>());
+                                     
                                      var latestChangeLog = changeLogSectionEntries.Aggregate((c, n) => c + Environment.NewLine + n);
 
                                      var release = new NewRelease(SemVer) {
