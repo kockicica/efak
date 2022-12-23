@@ -30,6 +30,7 @@ using FileMode = System.IO.FileMode;
 
 [GitHubActions("continuous",
                GitHubActionsImage.UbuntuLatest,
+               OnPushBranchesIgnore = new []{"releases/**"},
                OnPushTagsIgnore = new []{"v*"},
                InvokedTargets = new[] { nameof(Compile) },
                FetchDepth = 0
@@ -37,7 +38,6 @@ using FileMode = System.IO.FileMode;
 [GitHubActions("tagged",
                GitHubActionsImage.UbuntuLatest,
                InvokedTargets = new[] { nameof(Cli), nameof(Pack) },
-               AutoGenerate = false,
                FetchDepth = 0,
                OnPushTags = new[] { "v*" },
                PublishArtifacts = true,
