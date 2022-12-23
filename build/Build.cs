@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 using Nuke.Common;
@@ -14,6 +16,7 @@ using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 
 using static Nuke.Common.EnvironmentInfo;
+using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -100,5 +103,26 @@ class Build : NukeBuild {
             );
 
         });
+
+    Target Pack => _ => _
+                        .After(Cli)
+                        .Executes(() =>
+                        {
+                            var project = Solution.AllProjects.SingleOrDefault(p => p.Name == "efak.cli");
+                            var whatToPublish = from runtime in Runtime select new { project, runtime };
+
+                            var version = SemVer;
+
+                            foreach (var pr in whatToPublish) {
+                                // var what = ArtifactsDirectory / $"{pr.project.Name}-{pr.runtime}-{version}" /
+                                //     $"{pr.project.Name}-{pr.runtime}-{version}";
+                                var what = ArtifactsDirectory / $"{pr.project.Name}-{pr.runtime}-{version}";
+                                var where = ArtifactsDirectory / $"{pr.project.Name}-{pr.runtime}-{version}.zip";
+                                CompressZip(what, where, info => true, compressionLevel: CompressionLevel.SmallestSize, fileMode: FileMode.Create);
+                                EnsureCleanDirectory(what);
+                                DeleteDirectory(what);
+                            }
+
+                        });
 
 }
