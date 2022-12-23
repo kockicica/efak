@@ -86,7 +86,6 @@
               "Clean",
               "Cli",
               "Compile",
-              "CreateChangeLog",
               "CreateRelease",
               "Pack",
               "Restore"
@@ -106,7 +105,6 @@
               "Clean",
               "Cli",
               "Compile",
-              "CreateChangeLog",
               "CreateRelease",
               "Pack",
               "Restore"

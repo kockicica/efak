@@ -28,12 +28,22 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 using FileMode = System.IO.FileMode;
 
-[GitHubActions("continuous", GitHubActionsImage.UbuntuLatest, OnPushTagsIgnore = new[] { "v*" },
+[GitHubActions("continuous",
+               GitHubActionsImage.UbuntuLatest,
+               OnPushTagsIgnore = new []{"v*"},
                InvokedTargets = new[] { nameof(Compile) },
-               FetchDepth = 0)]
-[GitHubActions("tagged", GitHubActionsImage.UbuntuLatest, InvokedTargets = new[] { nameof(Cli), nameof(Pack) }, AutoGenerate = false,
-               FetchDepth = 0, OnPushTags = new[] { "v*" }, PublishArtifacts = true, EnableGitHubToken = true)]
-class Build : NukeBuild {
+               FetchDepth = 0
+)]
+[GitHubActions("tagged",
+               GitHubActionsImage.UbuntuLatest,
+               InvokedTargets = new[] { nameof(Cli), nameof(Pack) },
+               AutoGenerate = false,
+               FetchDepth = 0,
+               OnPushTags = new[] { "v*" },
+               PublishArtifacts = true,
+               EnableGitHubToken = true
+)]
+partial class Build : NukeBuild {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
     ///   - JetBrains Rider            https://nuke.build/rider
@@ -154,7 +164,7 @@ class Build : NukeBuild {
                                      var changeLogSectionEntries =
                                          ControlFlow.SuppressErrors(
                                              () => ChangelogTasks.ExtractChangelogSectionNotes(ChangeLogFile), Array.Empty<string>());
-                                     
+
                                      var latestChangeLog = changeLogSectionEntries.Aggregate((c, n) => c + Environment.NewLine + n);
 
                                      var release = new NewRelease(SemVer) {
