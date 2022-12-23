@@ -81,7 +81,6 @@ class Build : NukeBuild {
                                   .SetConfiguration(Configuration)
                                   .SetProperty("AllowedReferenceRelatedFileExtensions", "none")
                                   .SetProject(project)
-                                  .SetRuntime("win-x64")
                                   .SetAssemblyVersion(AssemblySemVer)
                                   .SetFileVersion(AssemblySemFileVer)
                                   .SetInformationalVersion(InformationalVersion)
