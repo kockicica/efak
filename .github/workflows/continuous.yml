@@ -19,7 +19,7 @@ name: continuous
 on:
   push:
     branches-ignore:
-      - 'releases/**'
+      - develop
     tags-ignore:
       - 'v*'
 

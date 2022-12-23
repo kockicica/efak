@@ -30,8 +30,9 @@ using FileMode = System.IO.FileMode;
 
 [GitHubActions("continuous",
                GitHubActionsImage.UbuntuLatest,
-               OnPushBranchesIgnore = new []{"releases/**"},
+               OnPushBranchesIgnore = new []{"develop"},
                OnPushTagsIgnore = new []{"v*"},
+               PublishArtifacts = false,
                InvokedTargets = new[] { nameof(Compile) },
                FetchDepth = 0
 )]
@@ -127,8 +128,6 @@ partial class Build : NukeBuild {
 
         });
 
-    string[] Artifacts = Array.Empty<string>();
-
     Target Pack => _ => _
                         .After(Cli)
                         .Produces(ArtifactsDirectory / "*.zip")
@@ -147,8 +146,6 @@ partial class Build : NukeBuild {
                                 CompressZip(what, where, info => true, compressionLevel: CompressionLevel.SmallestSize, fileMode: FileMode.Create);
                                 EnsureCleanDirectory(what);
                                 DeleteDirectory(what);
-                                Artifacts.Append(where);
-
                             }
 
                         });
