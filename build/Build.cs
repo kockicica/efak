@@ -1,0 +1,102 @@
+using System;
+using System.Linq;
+
+using Nuke.Common;
+using Nuke.Common.CI;
+using Nuke.Common.Execution;
+using Nuke.Common.Git;
+using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
+using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Utilities.Collections;
+
+using static Nuke.Common.EnvironmentInfo;
+using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
+
+class Build : NukeBuild {
+    /// Support plugins are available for:
+    ///   - JetBrains ReSharper        https://nuke.build/resharper
+    ///   - JetBrains Rider            https://nuke.build/rider
+    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
+    ///   - Microsoft VSCode           https://nuke.build/vscode
+    public static int Main() => Execute<Build>(x => x.Compile);
+
+    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
+    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [Parameter("Self contained publish - Default is true")]
+    bool SelfContained { get; set; } = true;
+
+    [Solution] readonly Solution Solution;
+
+    [Parameter("Runtime", List = true)]
+    string[] Runtime { get; set; } = { "win-x64", "win-x86" };
+
+    AbsolutePath SourceDirectory    => RootDirectory / "src";
+    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
+    [GitRepository] readonly GitRepository GitRepository;
+    [GitVersion]    readonly GitVersion    GitVersion;
+
+    const string DefaultNoGitVersion = "0.1.0";
+
+    string SemVer               => GitVersion?.SemVer ?? DefaultNoGitVersion;
+    string InformationalVersion => GitVersion?.InformationalVersion ?? DefaultNoGitVersion;
+    string AssemblySemVer       => GitVersion?.AssemblySemVer ?? DefaultNoGitVersion;
+    string AssemblySemFileVer   => GitVersion?.AssemblySemFileVer ?? DefaultNoGitVersion;
+    
+    Target Clean => _ => _
+                         .Before(Restore)
+                         .Executes(() =>
+                         {
+                         });
+
+    Target Restore => _ => _
+        .Executes(() =>
+        {
+        });
+
+    Target Compile => _ => _
+                           .DependsOn(Restore)
+                           .Executes(() =>
+                           {
+                           });
+
+    Target Cli => _ => _
+        .Executes(() =>
+        {
+            var project = Solution.AllProjects.SingleOrDefault(p => p.Name == "efak.cli");
+            var whatToPublish = from runtime in Runtime select new { project, runtime };
+
+            var version = SemVer;
+
+            DotNetPublish(settings =>
+                              settings
+                                  .SetSelfContained(SelfContained)
+                                  .SetPublishSingleFile(true)
+                                  .SetConfiguration(Configuration)
+                                  .SetProperty("AllowedReferenceRelatedFileExtensions", "none")
+                                  .SetProject(project)
+                                  .SetRuntime("win-x64")
+                                  .SetAssemblyVersion(AssemblySemVer)
+                                  .SetFileVersion(AssemblySemFileVer)
+                                  .SetInformationalVersion(InformationalVersion)
+                                  .SetVersion(AssemblySemFileVer)
+                                  .CombineWith(whatToPublish,
+                                               (publishSettings, o) =>
+                                                   publishSettings
+                                                       .SetProject(o.project)
+                                                       .SetRuntime(o.runtime)
+                                                       .SetOutput(ArtifactsDirectory /
+                                                                  $"{o.project.Name}-{o.runtime}-{version}" /
+                                                                  $"{o.project.Name}-{o.runtime}-{version}")
+                                  )
+            );
+
+        });
+
+}

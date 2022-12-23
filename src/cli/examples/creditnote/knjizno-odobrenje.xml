@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <CreditNote xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sbt="http://mfin.gov.rs/srbdt/srbdtext" xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2">
+      <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021</cbc:CustomizationID>
+      <cbc:ID>Broj knjižnog odobrenja</cbc:ID><!--Jedinstveni broj knjižnog odobrenja-->
+      <cbc:IssueDate>2022-03-29</cbc:IssueDate> <!-- Upisuje se datum slanja knjižnog odobrenja -->
+      <cbc:CreditNoteTypeCode>381</cbc:CreditNoteTypeCode>
+      <cbc:Note />
+      <cbc:DocumentCurrencyCode>RSD</cbc:DocumentCurrencyCode>
+      <cac:InvoicePeriod>
+        <cbc:DescriptionCode>0</cbc:DescriptionCode>
+      </cac:InvoicePeriod>
+      <cac:BillingReference>
+        <cac:InvoiceDocumentReference>
+          <cbc:ID>Broj fakture</cbc:ID><!--Broj fakture na koji se knjižno odobrenje odnosi-->
+          <cbc:IssueDate>Datum izdavanja fakture</cbc:IssueDate>
+        </cac:InvoiceDocumentReference>
+      </cac:BillingReference>
+      <cac:ContractDocumentReference>
+        <cbc:ID>Broj ugovora</cbc:ID>
+      </cac:ContractDocumentReference>
+      <cac:AccountingSupplierParty>
+        <cac:Party>
+          <cbc:EndpointID schemeID="9948">123456789</cbc:EndpointID><!--  PIB pravnog lica A-->
+          <cac:PartyName>
+            <cbc:Name>Naziv pravnog lica A</cbc:Name>
+          </cac:PartyName>
+          <cac:PostalAddress>
+            <cbc:CityName>Grad pravnog lica A</cbc:CityName>
+            <cac:Country>
+              <cbc:IdentificationCode>RS</cbc:IdentificationCode>
+            </cac:Country>
+          </cac:PostalAddress>
+          <cac:PartyTaxScheme>
+            <cbc:CompanyID>RS123456789</cbc:CompanyID><!--Obavezan prefix "RS" i PIB broj pravnog lica A-->
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:PartyTaxScheme>
+          <cac:PartyLegalEntity>
+            <cbc:RegistrationName>Naziv pravnog lica A</cbc:RegistrationName>
+            <cbc:CompanyID>12345678</cbc:CompanyID><!--  Matični broj pravnog lica A-->
+          </cac:PartyLegalEntity>
+        </cac:Party>
+      </cac:AccountingSupplierParty>
+      <cac:AccountingCustomerParty>
+        <cac:Party>
+          <cbc:EndpointID schemeID="9948">987654321</cbc:EndpointID><!--  PIB pravnog lica B-->
+          <cac:PartyIdentification>
+            <cbc:ID>JBKJS:12345</cbc:ID><!--Broj JBKJS budžetskog korisnika-->
+          </cac:PartyIdentification>
+          <cac:PartyName>
+            <cbc:Name>Naziv pravnog lica B</cbc:Name>
+          </cac:PartyName>
+          <cac:PostalAddress>
+            <cbc:StreetName>Adresa pravnog lica B</cbc:StreetName>
+            <cbc:CityName>Grad pravnog lica B</cbc:CityName>
+            <cac:Country>
+              <cbc:IdentificationCode>RS</cbc:IdentificationCode>
+            </cac:Country>
+          </cac:PostalAddress>
+          <cac:PartyTaxScheme>
+            <cbc:CompanyID>RS987654321</cbc:CompanyID><!--Obavezan prefix "RS" i PIB broj pravnog lica B-->
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:PartyTaxScheme>
+          <cac:PartyLegalEntity>
+            <cbc:RegistrationName>Naziv pravnog lica B</cbc:RegistrationName>
+            <cbc:CompanyID>87654321</cbc:CompanyID><!--  Matični broj pravnog lica B-->
+          </cac:PartyLegalEntity>
+        </cac:Party>
+      </cac:AccountingCustomerParty>
+      <cac:PaymentMeans>
+        <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
+        <cbc:PaymentID>(mod97) 123-456-78</cbc:PaymentID><!--Model i poziv na broj u formatu: (mod [Broj modela])[Poziv na broj]-->
+        <cac:PayeeFinancialAccount>
+          <cbc:ID>Tekući račun pravnog lica A</cbc:ID>
+        </cac:PayeeFinancialAccount>
+      </cac:PaymentMeans>
+      <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="RSD">300</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+          <cbc:TaxableAmount currencyID="RSD">1500</cbc:TaxableAmount>
+          <cbc:TaxAmount currencyID="RSD">300.0</cbc:TaxAmount>
+          <cac:TaxCategory>
+            <cbc:ID>S</cbc:ID>
+            <cbc:Percent>20</cbc:Percent>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:TaxCategory>
+        </cac:TaxSubtotal>
+      </cac:TaxTotal>
+      <cac:LegalMonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="RSD">1500</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="RSD">1500</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="RSD">1800</cbc:TaxInclusiveAmount>
+        <cbc:AllowanceTotalAmount currencyID="RSD">0</cbc:AllowanceTotalAmount>
+        <cbc:PrepaidAmount currencyID="RSD">0</cbc:PrepaidAmount>
+        <cbc:PayableAmount currencyID="RSD">1800</cbc:PayableAmount>
+      </cac:LegalMonetaryTotal>
+      <cac:CreditNoteLine>
+        <cbc:ID>1</cbc:ID>
+        <cbc:CreditedQuantity unitCode="DAY">1</cbc:CreditedQuantity>
+        <cbc:LineExtensionAmount currencyID="RSD">1500</cbc:LineExtensionAmount>
+        <cac:Item>
+          <cbc:Name>test4</cbc:Name>
+          <cac:SellersItemIdentification>
+            <cbc:ID>004</cbc:ID>
+          </cac:SellersItemIdentification>
+          <cac:ClassifiedTaxCategory>
+            <cbc:ID>VAT</cbc:ID>
+            <cbc:Percent>20</cbc:Percent>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:ClassifiedTaxCategory>
+        </cac:Item>
+        <cac:Price>
+          <cbc:PriceAmount currencyID="RSD">1500</cbc:PriceAmount>
+        </cac:Price>
+      </cac:CreditNoteLine>
+    </CreditNote>
