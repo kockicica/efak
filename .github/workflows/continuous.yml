@@ -16,7 +16,10 @@
 
 name: continuous
 
-on: [push]
+on:
+  push:
+    tags-ignore:
+      - 'v*'
 
 jobs:
   ubuntu-latest:
@@ -33,5 +36,5 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd Cli'
-        run: ./build.cmd Cli
+      - name: Run './build.cmd Compile'
+        run: ./build.cmd Compile

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{BE5DE694-B115-4F00-BA3B-2D8CB31BEEBD}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		..\CHANGELOG.md = ..\CHANGELOG.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efak.test", "efak.test\efak.test.csproj", "{BC6A9CD5-ACBA-4977-8899-96B00432C1BF}"
