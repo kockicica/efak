@@ -131,7 +131,7 @@ partial class Build : NukeBuild {
 
     Target Pack => _ => _
                         .After(Cli)
-                        .Produces(ArtifactsDirectory / ".zip")
+                        .Produces(ArtifactsDirectory / "*.zip")
                         .Executes(() =>
                         {
                             var project = Solution.efak_cli;
