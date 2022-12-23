@@ -163,8 +163,8 @@ partial class Build : NukeBuild {
 
                                      var tag = $"v{SemVer}";
 
-                                     var release = new NewRelease(SemVer) {
-                                         TargetCommitish = GitVersion.Sha,
+                                     var release = new NewRelease(tag) {
+                                         //TargetCommitish = GitVersion.Sha,
                                          Draft = true,
                                          Name = tag,
                                          Prerelease = !string.IsNullOrEmpty(PreReleaseTag),
