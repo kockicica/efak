@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -176,7 +177,7 @@ partial class Build : NukeBuild {
                                      var createdRelease = await GitHubTasks.GitHubClient.Repository.Release.Create(owner, name, release);
 
                                      GlobFiles(ArtifactsDirectory, "*.zip")
-                                         .ForEach(x => UploadReleaseAssetToGithub(createdRelease, x));
+                                         .ForEach(async x => await UploadReleaseAssetToGithub(createdRelease, x));
 
                                      await GitHubTasks.GitHubClient.Repository.Release.Edit(
                                          owner, name, createdRelease.Id, new ReleaseUpdate { Draft = false });
@@ -190,7 +191,7 @@ partial class Build : NukeBuild {
     ///   - Microsoft VSCode           https://nuke.build/vscode
     public static int Main() => Execute<Build>(x => x.Compile);
 
-    private static void UploadReleaseAssetToGithub(Release release, string asset) {
+    private static async Task UploadReleaseAssetToGithub(Release release, string asset) {
         Log.Information("Upload release asset: {file}", asset);
         if (!File.Exists(asset)) {
             Log.Warning("Release asset: {file} does not exist", asset);
