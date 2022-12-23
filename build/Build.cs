@@ -157,7 +157,9 @@ partial class Build : NukeBuild {
                                          ControlFlow.SuppressErrors(
                                              () => ChangelogTasks.ExtractChangelogSectionNotes(ChangeLogFile), Array.Empty<string>());
 
-                                     var latestChangeLog = changeLogSectionEntries.Aggregate((c, n) => c + Environment.NewLine + n);
+                                     var latestChangeLog = changeLogSectionEntries.Any()
+                                         ? changeLogSectionEntries.Aggregate((c, n) => c + Environment.NewLine + n)
+                                         : "";
 
                                      var tag = $"v{SemVer}";
 
