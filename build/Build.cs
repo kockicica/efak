@@ -155,7 +155,8 @@ partial class Build : NukeBuild {
 
     Target CreateRelease => _ => _
                                  .TriggeredBy(Pack)
-                                 .Executes<Task>(async () =>
+                                 .Unlisted()
+                                 .Executes(async () =>
                                  {
                                      GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue(nameof(NukeBuild))) {
                                          Credentials = new Credentials(GitHubActions.Instance.Token)
