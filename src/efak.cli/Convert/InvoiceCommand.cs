@@ -13,10 +13,12 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace efak.cli.Convert;
 
-[Command($"{Convert} {Invoice}", Description = "Convert invoices from xml to json and back")]
-public class InvoiceCommand : ConvertCommand, ICommand {
+[Command($"{ConvertCommand.Convert} {Invoice}", Description = "Convert invoices from xml to json and back")]
+public class InvoiceCommand : ConvertCommandBase, ICommand {
 
     public const string Invoice = "invoice";
+
+    #region ICommand Members
 
     public async ValueTask ExecuteAsync(IConsole console) {
 
@@ -47,6 +49,8 @@ public class InvoiceCommand : ConvertCommand, ICommand {
         }
     }
 
+    #endregion
+
     protected async Task<InvoiceType> FromXML(string file) {
         var xml = await File.ReadAllTextAsync(file).ConfigureAwait(false);
         var invoice = UblDocument.Parse<InvoiceType>(xml);
@@ -61,7 +65,7 @@ public class InvoiceCommand : ConvertCommand, ICommand {
 
     protected Task<string> ToJSON(InvoiceType invoice) {
         var doc = UblDocument.ToXDocument(invoice);
-        doc!.Document!.Declaration!.Encoding = "utf-8"; 
+        doc!.Document!.Declaration!.Encoding = "utf-8";
         var json = JsonConvert.SerializeXNode(doc, Formatting.Indented, false);
         return Task.FromResult(json);
     }
@@ -69,22 +73,19 @@ public class InvoiceCommand : ConvertCommand, ICommand {
     protected async Task<InvoiceType> FromJSON(string file) {
         var json = await File.ReadAllTextAsync(file).ConfigureAwait(false);
         var doc = JsonConvert.DeserializeXNode(json);
-        doc!.Document!.Declaration!.Encoding = "utf-8"; 
+        doc!.Document!.Declaration!.Encoding = "utf-8";
         var invoice = UblDocument.Parse<InvoiceType>(doc!.ToString());
-        invoice.Xmlns = new XmlSerializerNamespaces(new[]
-        {
-            new XmlQualifiedName("cac","urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"),
-            new XmlQualifiedName("cbc","urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"),
-            new XmlQualifiedName("cec","urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"),
-            new XmlQualifiedName("xsi","http://www.w3.org/2001/XMLSchema-instance"),
-            new XmlQualifiedName("xsd","http://www.w3.org/2001/XMLSchema"),
-            new XmlQualifiedName("sbt","http://mfin.gov.rs/srbdt/srbdtext"),
+        invoice.Xmlns = new XmlSerializerNamespaces(new[] {
+            new XmlQualifiedName("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"),
+            new XmlQualifiedName("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"),
+            new XmlQualifiedName("cec", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"),
+            new XmlQualifiedName("xsi", "http://www.w3.org/2001/XMLSchema-instance"),
+            new XmlQualifiedName("xsd", "http://www.w3.org/2001/XMLSchema"),
+            new XmlQualifiedName("sbt", "http://mfin.gov.rs/srbdt/srbdtext"),
             // <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
-            
-            
-        });        
+
+
+        });
         return invoice;
     }
-
-
 }
