@@ -21,6 +21,8 @@ using Nuke.Common.Utilities.Collections;
 
 using Octokit;
 
+using Serilog;
+
 using static Nuke.Common.IO.CompressionTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -186,7 +188,9 @@ partial class Build : NukeBuild {
                                  });
 
     private static async Task UploadReleaseAssetToGithub(Release release, string asset) {
+        Log.Information("Upload release asset: {file}", asset);
         if (!File.Exists(asset)) {
+            Log.Warning("Release asset: {file} does not exist", asset);
             return;
         }
         if (!new FileExtensionContentTypeProvider().TryGetContentType(asset, out string contentType)) {
@@ -198,5 +202,6 @@ partial class Build : NukeBuild {
             RawData = File.OpenRead(asset)
         };
         await GitHubTasks.GitHubClient.Repository.Release.UploadAsset(release, releaseAsseetUpload);
+        Log.Information("Uploaded release asset: {file}", asset);
     }
 }
