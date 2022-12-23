@@ -23,6 +23,8 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [GitHubActions("continuous", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Cli) },
                FetchDepth = 0)]
+[GitHubActions("tagged", GitHubActionsImage.UbuntuLatest, InvokedTargets = new[] { nameof(Cli), nameof(Pack) },
+               FetchDepth = 0, OnPushTags = new []{"v*"}, PublishArtifacts = true)]
 class Build : NukeBuild {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -106,6 +108,7 @@ class Build : NukeBuild {
 
     Target Pack => _ => _
                         .After(Cli)
+                        .Produces(ArtifactsDirectory / "*.zip")
                         .Executes(() =>
                         {
                             var project = Solution.AllProjects.SingleOrDefault(p => p.Name == "efak.cli");
