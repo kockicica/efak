@@ -159,10 +159,12 @@ partial class Build : NukeBuild {
 
                                      var latestChangeLog = changeLogSectionEntries.Aggregate((c, n) => c + Environment.NewLine + n);
 
-                                     var release = new NewRelease(SemVer) {
+                                     var tag = $"v{SemVer}";
+
+                                     var release = new NewRelease(tag) {
                                          TargetCommitish = GitVersion.Sha,
                                          Draft = true,
-                                         Name = $"v{SemVer}",
+                                         Name = tag,
                                          Prerelease = !string.IsNullOrEmpty(PreReleaseTag),
                                          Body = latestChangeLog,
                                      };
