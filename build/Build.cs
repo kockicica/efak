@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,7 +31,7 @@ using FileMode = System.IO.FileMode;
 
 [GitHubActions("continuous",
                GitHubActionsImage.UbuntuLatest,
-               On = new [] { GitHubActionsTrigger.Push },
+               On = new[] { GitHubActionsTrigger.Push },
                PublishArtifacts = false,
                InvokedTargets = new[] { nameof(Compile) },
                FetchDepth = 0
@@ -46,20 +45,19 @@ using FileMode = System.IO.FileMode;
                EnableGitHubToken = true
 )]
 partial class Build : NukeBuild {
-    /// Support plugins are available for:
-    ///   - JetBrains ReSharper        https://nuke.build/resharper
-    ///   - JetBrains Rider            https://nuke.build/rider
-    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
-    ///   - Microsoft VSCode           https://nuke.build/vscode
-    public static int Main() => Execute<Build>(x => x.Compile);
+
+    const string DefaultNoGitVersion = "0.1.0";
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("Self contained publish - Default is true")]
-    bool SelfContained { get; set; } = true;
+    [GitRepository] readonly GitRepository GitRepository;
+    [GitVersion]    readonly GitVersion    GitVersion;
 
     [Solution(GenerateProjects = true)] readonly Solution Solution;
+
+    [Parameter("Self contained publish - Default is true")]
+    bool SelfContained { get; set; } = true;
 
     [Parameter("Runtime", List = true)]
     string[] Runtime { get; set; } = { "win-x64", "win-x86" };
@@ -67,12 +65,7 @@ partial class Build : NukeBuild {
     AbsolutePath SourceDirectory    => RootDirectory / "src";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
-    [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion]    readonly GitVersion    GitVersion;
-
     static string ChangeLogFile => RootDirectory / "CHANGELOG.md";
-
-    const string DefaultNoGitVersion = "0.1.0";
 
     string SemVer               => GitVersion?.SemVer ?? DefaultNoGitVersion;
     string InformationalVersion => GitVersion?.InformationalVersion ?? DefaultNoGitVersion;
@@ -187,6 +180,13 @@ partial class Build : NukeBuild {
 
                                  });
 
+    /// Support plugins are available for:
+    ///   - JetBrains ReSharper        https://nuke.build/resharper
+    ///   - JetBrains Rider            https://nuke.build/rider
+    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
+    ///   - Microsoft VSCode           https://nuke.build/vscode
+    public static int Main() => Execute<Build>(x => x.Compile);
+
     private static async Task UploadReleaseAssetToGithub(Release release, string asset) {
         Log.Information("Upload release asset: {file}", asset);
         if (!File.Exists(asset)) {
@@ -196,12 +196,16 @@ partial class Build : NukeBuild {
         if (!new FileExtensionContentTypeProvider().TryGetContentType(asset, out string contentType)) {
             contentType = "application/x-binary";
         }
-        var releaseAsseetUpload = new ReleaseAssetUpload {
+        Log.Information("Content type: {type}", contentType);
+
+        await using var artifactStream = File.OpenRead(asset);
+        var fileName = Path.GetFileName(asset);
+        var releaseAssetUpload = new ReleaseAssetUpload {
             ContentType = contentType,
-            FileName = asset,
-            RawData = File.OpenRead(asset)
+            FileName = fileName,
+            RawData = artifactStream
         };
-        await GitHubTasks.GitHubClient.Repository.Release.UploadAsset(release, releaseAsseetUpload);
+        await GitHubTasks.GitHubClient.Repository.Release.UploadAsset(release, releaseAssetUpload);
         Log.Information("Uploaded release asset: {file}", asset);
     }
 }
